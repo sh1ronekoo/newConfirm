@@ -40,6 +40,12 @@
             appointmentTimePicker = new DateTimePicker();
             btnSubmit = new Button();
             button1 = new Button();
+            yesRadioButton = new RadioButton();
+            noRadioButton = new RadioButton();
+            label16 = new Label();
+            label20 = new Label();
+            label9 = new Label();
+            additionalNotesTextBox = new TextBox();
             SuspendLayout();
             // 
             // label1
@@ -152,7 +158,7 @@
             btnSubmit.BackColor = Color.FromArgb(25, 118, 210);
             btnSubmit.FlatStyle = FlatStyle.Flat;
             btnSubmit.ForeColor = Color.White;
-            btnSubmit.Location = new Point(140, 381);
+            btnSubmit.Location = new Point(225, 648);
             btnSubmit.Margin = new Padding(3, 4, 3, 4);
             btnSubmit.Name = "btnSubmit";
             btnSubmit.Size = new Size(110, 44);
@@ -171,12 +177,86 @@
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
+            // yesRadioButton
+            // 
+            yesRadioButton.AutoSize = true;
+            yesRadioButton.Location = new Point(38, 402);
+            yesRadioButton.Margin = new Padding(3, 4, 3, 4);
+            yesRadioButton.Name = "yesRadioButton";
+            yesRadioButton.Size = new Size(51, 24);
+            yesRadioButton.TabIndex = 52;
+            yesRadioButton.TabStop = true;
+            yesRadioButton.Text = "Yes";
+            yesRadioButton.UseVisualStyleBackColor = true;
+            yesRadioButton.CheckedChanged += yesRadioButton_CheckedChanged;
+            // 
+            // noRadioButton
+            // 
+            noRadioButton.AutoSize = true;
+            noRadioButton.Location = new Point(38, 435);
+            noRadioButton.Margin = new Padding(3, 4, 3, 4);
+            noRadioButton.Name = "noRadioButton";
+            noRadioButton.Size = new Size(50, 24);
+            noRadioButton.TabIndex = 53;
+            noRadioButton.TabStop = true;
+            noRadioButton.Text = "No";
+            noRadioButton.UseVisualStyleBackColor = true;
+            noRadioButton.CheckedChanged += noRadioButton_CheckedChanged;
+            // 
+            // label16
+            // 
+            label16.AutoSize = true;
+            label16.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label16.Location = new Point(10, 358);
+            label16.Name = "label16";
+            label16.Size = new Size(161, 20);
+            label16.TabIndex = 54;
+            label16.Text = "💊 Medical Screening";
+            // 
+            // label20
+            // 
+            label20.AutoSize = true;
+            label20.Font = new Font("Segoe UI Light", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label20.Location = new Point(37, 378);
+            label20.Name = "label20";
+            label20.Size = new Size(216, 20);
+            label20.TabIndex = 55;
+            label20.Text = "Taking any medications currently?";
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label9.Location = new Point(10, 463);
+            label9.Name = "label9";
+            label9.Size = new Size(244, 20);
+            label9.TabIndex = 57;
+            label9.Text = "💬 Additional Notes / Symptoms";
+            // 
+            // additionalNotesTextBox
+            // 
+            additionalNotesTextBox.BackColor = Color.FromArgb(248, 252, 252);
+            additionalNotesTextBox.BorderStyle = BorderStyle.FixedSingle;
+            additionalNotesTextBox.Location = new Point(37, 487);
+            additionalNotesTextBox.Margin = new Padding(3, 4, 3, 4);
+            additionalNotesTextBox.Multiline = true;
+            additionalNotesTextBox.Name = "additionalNotesTextBox";
+            additionalNotesTextBox.Size = new Size(509, 153);
+            additionalNotesTextBox.TabIndex = 56;
+            additionalNotesTextBox.TextChanged += additionalNotesTextBox_TextChanged;
+            // 
             // exispatient
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.GradientInactiveCaption;
-            ClientSize = new Size(392, 471);
+            ClientSize = new Size(565, 754);
+            Controls.Add(label9);
+            Controls.Add(additionalNotesTextBox);
+            Controls.Add(yesRadioButton);
+            Controls.Add(noRadioButton);
+            Controls.Add(label16);
+            Controls.Add(label20);
             Controls.Add(button1);
             Controls.Add(btnSubmit);
             Controls.Add(appointmentTimePicker);
@@ -210,5 +290,11 @@
         private DateTimePicker appointmentTimePicker;
         private Button btnSubmit;
         private Button button1;
+        private RadioButton yesRadioButton;
+        private RadioButton noRadioButton;
+        private Label label16;
+        private Label label20;
+        private Label label9;
+        private TextBox additionalNotesTextBox;
     }
 }

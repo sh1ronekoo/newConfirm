@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
+using OOP_Project.Models;
 
 namespace OOP_Project.Windows
 {
     public partial class exispatient : Form
     {
         private readonly BookingManager exisPatient;
+
         public exispatient()
         {
             InitializeComponent();
+
+            exisPatient = new BookingManager();
 
             // Ensure the submit button actually invokes the handler (Designer did not wire it).
             btnSubmit.Click += btnSubmit_Click;
@@ -50,6 +54,7 @@ namespace OOP_Project.Windows
                 return;
             }
 
+            string name = nameTextBox.Text.Trim();
             string phone = phoneNumberTextBox.Text.Trim();
             if (!phone.All(char.IsDigit))
             {
@@ -58,13 +63,45 @@ namespace OOP_Project.Windows
                 return;
             }
 
+            // Check DB for exact full-name match for existing patient
+            BookingRecord? existingRecord = null;
+            try
+            {
+                existingRecord = exisPatient.GetLatestBookingByName(name);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to look up existing patient data: " + ex.Message, "Lookup error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (existingRecord == null)
+            {
+                // Inform the user this is for existing patients only
+                MessageBox.Show(
+                    "Your name is not here. This form is for patients who already registered in New Patient.\nIf you're a new patient, please use the New Patient form to register first.",
+                    "Name not found",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                nameTextBox.Focus();
+                return;
+            }
+
             // Build appointment DateTime from date picker and time picker
             DateTime appointmentDate = appointmentDatePicker.Value.Date;
             TimeSpan appointmentTime = appointmentTimePicker.Value.TimeOfDay;
             DateTime appointmentDateTime = appointmentDate + appointmentTime;
 
-            // All validation passed — open confirmation form with values
-            using (var confirm = new exisConfirm(nameTextBox.Text.Trim(), phone, appointmentDateTime))
+            // Apply UI changes (medical screening + additional notes) to the record before opening confirm
+            // Note: BookingRecord has init-only properties, so use `with` to create an updated instance.
+            var updatedRecord = existingRecord with
+            {
+                CurrentMedication = yesRadioButton.Checked ? "Yes" : (noRadioButton.Checked ? "No" : existingRecord.CurrentMedication ?? string.Empty),
+                AdditionalNotes = (additionalNotesTextBox.Text ?? string.Empty).Trim()
+            };
+
+            // Found existing patient — open confirmation form with DB values (updated with user's inputs)
+            using (var confirm = new exisConfirm(name, phone, appointmentDateTime, updatedRecord))
             {
                 // Hide current form while confirmation dialog is shown
                 this.Hide();
@@ -72,7 +109,7 @@ namespace OOP_Project.Windows
                 if (result == DialogResult.OK)
                 {
                     // user confirmed - optionally call booking logic here
-                    // e.g., exisPatient?.CreateBooking(...);
+                    // exisPatient.InsertBooking(...) is handled inside exisConfirm on confirm
                 }
                 // close or show again depending on your flow; here we close the current form
                 this.Close();
@@ -95,6 +132,21 @@ namespace OOP_Project.Windows
         }
 
         private void phoneNumberTextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void yesRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void noRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void additionalNotesTextBox_TextChanged(object sender, EventArgs e)
         {
 
         }
